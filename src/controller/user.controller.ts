@@ -1,7 +1,7 @@
 // controllers/userController.js
 import UserModel from "../model/user.model";
 import { Request, Response } from "express";
-import { checkInValidEmail, checkInValidStringField, checkValidMongoseId, sendResponse } from "../utility/UtilityFunction";
+import { checkInValidEmail, checkInValidStringField, checkValidMongoseId, generateToken, sendResponse } from "../utility/UtilityFunction";
 import logger from "../utility/wingstonLogger";
 // controllers/userController.ts
 
@@ -76,8 +76,13 @@ export const login = async (req: Request, res: Response) => {
         if (!isMatch) {
             return sendResponse(res, 401, "Invalid credentials", null);
         }
+         let obj = {
+              name: user.name,
+              number: user.number, email: user.email
+            }
+            const jwt = generateToken(obj)
 
-        sendResponse(res, 200, "Login successful", { userId: user._id });
+        sendResponse(res, 200, "Login successful", { user: user,jwt });
     } catch (err: any) {
         logger.error("error", err)
         sendResponse(res, 500, "Internal Server Error", null);

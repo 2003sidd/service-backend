@@ -3,4 +3,9 @@ export interface Config {
     CustomerAppVersion: string
     TechnicianAppVersion: string
     isMaintaince: boolean
+    aboutUs:string
+    contactNumber:string
+    contactEmail:string
+    termAndConditon:string
+    privacyPolicy:string
 }

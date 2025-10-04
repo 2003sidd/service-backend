@@ -22,3 +22,7 @@
 2025-09-23T10:04:57.977Z [31merror[39m: Error at register employee
 2025-09-23T10:05:28.871Z [31merror[39m: Error at register employee
 2025-09-23T10:05:56.277Z [31merror[39m: Error at register employee Employee validation failed: address: Path `address` is required.
+2025-09-30T14:08:53.436Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
+2025-10-03T13:10:34.247Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
+2025-10-03T13:14:10.284Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
+2025-10-03T13:14:37.209Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')

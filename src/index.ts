@@ -7,13 +7,14 @@ import employeeRouter from './routes/employee.route';
 import serviceRouter from './routes/service.route';
 import configRouter from './routes/config.route';
 import dashboardRouter from './routes/dashboard.route';
-
+import serviceRequestRouter from './routes/serviceRequest.route';
 
 dotenv.config();  // Load .env variables
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT: number = 3000 as number;
+const HOST = '0.0.0.0';
 
 app.use(express.json());
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -28,11 +29,13 @@ app.use('/api/employee', employeeRouter)
 app.use('/api/service', serviceRouter)
 app.use('/api/config', configRouter);
 app.use('/api/dashboard', dashboardRouter)
+app.use('/api/serviceRequest', serviceRequestRouter)
 
 app.get('/', (_req, res) => {
   res.send('Hello, TypeScript + Express!');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

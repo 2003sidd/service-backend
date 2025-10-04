@@ -1,28 +1,19 @@
 import mongoose from "mongoose";
-
-interface IServiceDetails {
-    name: string;
-    price: number;
-}
-
-// Define the RequestedService interface (representing a single requested service)
-interface IRequestedService {
-    serviceId: mongoose.Schema.Types.ObjectId;  // Reference to Service collection
-    serviceDetails: IServiceDetails;            // Service details (name and price)
-    quantity: number;                           // Quantity of the service requested
-}
+import { ServiceRequestEnum } from "../enum/serviceRequest.enum";
 
 // Define the ServiceRequest interface (representing a service request)
 export interface IServiceRequest extends Document {
-    customerName: string;                  // Customer's name
-    customerEmail: string;                 // Customer's email
-    customerNumber: string;
-    customerId: mongoose.Schema.Types.ObjectId;
-    requestedServices: IRequestedService[]; // Array of requested services
-    status: 'pending' | 'in-progress' | 'completed'; // Service request status
+    name: string;                  // Customer's name
+    email: string;                 // Customer's email
+    number: string;
+    customer: mongoose.Schema.Types.ObjectId;
+    address: string;
+    subServiceId: mongoose.Schema.Types.ObjectId; // Array of requested services
+    serviceId: mongoose.Schema.Types.ObjectId; // Array of requested services
+    status: ServiceRequestEnum; // Service request status
     createdAt: Date;                       // Timestamp of creation
     csrPath: string
     assignTo: mongoose.Schema.Types.ObjectId;
-    comment:string,
-    price:string[]
+    comment: string,
+    amount: string
 }

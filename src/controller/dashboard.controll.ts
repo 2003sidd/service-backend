@@ -4,6 +4,7 @@ import { sendResponse } from "../utility/UtilityFunction";
 import UserModel from "../model/user.model";
 import EmployeeModel from "../model/employee.model";
 import serviceModel from "../model/service.model";
+import { roleEnum } from "../enum/role.enum";
 
 const getDashBoardData = async (req: Request, res: Response) => {
     try {
@@ -11,11 +12,11 @@ const getDashBoardData = async (req: Request, res: Response) => {
         const userCount = await UserModel.countDocuments();
         const serviceCount = await serviceModel.countDocuments();
 
-        const employeeCount = await EmployeeModel.countDocuments();
+        const employeeCount = await EmployeeModel.countDocuments({ role: roleEnum.TECHNICIAN });
 
         sendResponse(res, 200, "Dashboard data", { user, userCount, employeeCount, serviceCount })
     } catch (error) {
-        logger.error("Error at getting dashboard data"+ error);
+        logger.error("Error at getting dashboard data" + error);
         sendResponse(res, 500, "Internal server error", null)
     }
 };

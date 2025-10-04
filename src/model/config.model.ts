@@ -17,7 +17,27 @@ const ConfigSchema: Schema<Config> = new Schema({
     isMaintaince: {
         type: Boolean,
         default: false
+    },
+    aboutUs: {
+        type: String,
+        default: ''
+    },
+    contactNumber: {
+        type: String,
+        default: ''
+    },
+    contactEmail: {
+        type: String,
+        default: ''
+    },
+    privacyPolicy: {
+        type: String,
+        default: ''
+    },
+    termAndConditon: {
+        type: String,
+        default: ''
     }
 });
 
-export default mongoose.model("Config",ConfigSchema)
+export default mongoose.model("Config", ConfigSchema)

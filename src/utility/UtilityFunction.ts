@@ -45,7 +45,7 @@ const checkInValidEmail = (email: string) => {
     return !emailRegex.test(email);
 };
 
-const generateToken = (userData: { name: string, number: string, role: string, email: string }) => {
+const generateToken = (userData: { name: string, number: string, role?: string, email: string }) => {
     // Generate a new JWT token using user data
     return jwt.sign(userData, process.env.JWT_SECRET!, { expiresIn: '7d' });
 }
