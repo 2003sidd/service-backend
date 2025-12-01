@@ -3,6 +3,7 @@ import ApiResponse from "./ApIResponse"
 import { Response } from "express"
 import ApiError from "./ApiError"
 import jwt from "jsonwebtoken"
+import { roleEnum } from "../enum/role.enum"
 
 
 const sendResponse = (res: Response, statusCode: number, message: string = "DataFound", data: any) => {
@@ -45,9 +46,23 @@ const checkInValidEmail = (email: string) => {
     return !emailRegex.test(email);
 };
 
-const generateToken = (userData: { name: string, number: string, role?: string, email: string }) => {
+const generateToken = (userData: { id:string, name: string, number: string, email: string, role: roleEnum }) => {
     // Generate a new JWT token using user data
-    return jwt.sign(userData, process.env.JWT_SECRET!, { expiresIn: '7d' });
+
+    if (userData.role === roleEnum.ADMIN || userData.role === roleEnum.SUPERADMIN) {
+        return jwt.sign(userData, "Service@2026/12/09", { expiresIn: '30d' });
+    }
+    return jwt.sign(userData, "Service@2026/12/09", { expiresIn: '30d' });
+}
+
+export function generateServiceId(serviceId: string): string {
+    // Convert timestamp to base36 (numbers + letters)
+ const shortTime = Date.now().toString(36).toUpperCase().slice(-6);
+  
+  // Take only first 2–3 chars of the provided serviceId
+  const shortService = serviceId.slice(0, 3).toUpperCase();
+  
+  return `#SOS-${shortTime}${shortService}`;
 }
 
 

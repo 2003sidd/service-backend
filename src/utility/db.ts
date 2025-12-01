@@ -5,12 +5,10 @@ dotenv.config();
 
 const connectDb = async () => {
     try {
-        const uri = "mongodb+srv://siddhantbarman:Sidd%40123@cluster0.kfgyd41.mongodb.net/ServiceSite?retryWrites=true&w=majority&appName=Cluster0";
 
-        const mongoURL = uri;
 
         // Set up MongoDB connection
-        mongoose.connect(mongoURL)
+        mongoose.connect("mongodb+srv://siddhantbarman:Sidd%40123@cluster0.kfgyd41.mongodb.net/ServiceSite?retryWrites=true&w=majority&appName=Cluster0")
 
         // Get the default connection
         // Mongoose maintains a default connection object representing the MongoDB connection.
@@ -30,7 +28,7 @@ const connectDb = async () => {
             console.log('MongoDB disconnected');
         });
     } catch (error) {
-        
+     console.log("Error is",error)   
     }
 }
 // Define the MongoDB connection URL

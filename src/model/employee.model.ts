@@ -12,7 +12,8 @@ const EmployeeSchema: Schema<IEmployeeDocument> = new Schema(
         number: { type: String, required: true, unique: true },
         role: { type: String, enum: Object.values(roleEnum), required: true },
         password: { type: String, required: true },
-        address:{type:String, required:true},
+        notificationCount: { type: String, default: "0" },
+        address: { type: String, required: true },
         isActive: { type: Boolean, default: true },
         pinCode: { type: [String], required: true },
         fcmToken: { type: [String], required: false }

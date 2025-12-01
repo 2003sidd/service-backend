@@ -8,4 +8,5 @@ export interface Config {
     contactEmail:string
     termAndConditon:string
     privacyPolicy:string
+    qrImage:string
 }

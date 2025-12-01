@@ -8,6 +8,7 @@ export interface IEmployee {
     password: string;
     isActive: boolean;
     address: string;
+    notificationCount:string,
     pinCode: string[];
     fcmToken: string[]
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import EmployeeModel from "../model/employee.model";
-import { checkInValidEmail, checkInValidStringField, generateToken, sendResponse } from "../utility/UtilityFunction";
+import { checkInValidEmail, checkInValidStringField, checkValidMongoseId, generateToken, sendResponse } from "../utility/UtilityFunction";
 import logger from "../utility/wingstonLogger";
 import { roleEnum } from "../enum/role.enum";
 
@@ -49,11 +49,22 @@ export const registerEmployee = async (req: Request, res: Response) => {
       return sendResponse(res, 201, "Employee registered", true);
     }
 
+    const employee = await EmployeeModel.findById(_id);
+    if (!employee) {
+      return sendResponse(res, 400, "Employee not found", null)
+    }
 
-    const data = await EmployeeModel.findByIdAndUpdate(_id, { $set: { name, email, number, role } }, { new: true })
+    employee.name = name;
+    employee.email = email;
+    employee.number = number;
+    employee.role = role;
+    employee.password = password;
 
-    if (!data)
-      return sendResponse(res, 500, "Employee not update", false);
+    await employee.save()
+
+    // const data = await EmployeeModel.findByIdAndUpdate(_id, { $set: { name, email, number, role } }, { new: true })
+
+
 
     return sendResponse(res, 200, "Employee updated successfully", true);
   } catch (err: any) {
@@ -67,13 +78,6 @@ export const loginEmployee = async (req: Request, res: Response) => {
   try {
     const { email, password, type, fcmToken } = req.body;
 
-    // const allowedRoles = Object.values(roleEnum);
-
-    // let isValidRole = allowedRoles.includes(role);
-    // if (!isValidRole) {
-    //   sendResponse(res, 400, "Role is invalid", null)
-    // }
-
     if (!checkInValidStringField(email) && checkInValidEmail(email)) {
       return sendResponse(res, 400, "Email is required field and should be valid", null);
     }
@@ -86,31 +90,38 @@ export const loginEmployee = async (req: Request, res: Response) => {
     const employee = await EmployeeModel.findOne({ email });
     if (!employee) return sendResponse(res, 400, "Employee not found", null);
 
-    const isMatch = await employee.comparePassword(password);
-    if (!isMatch) return sendResponse(res, 401, "Invalid credentials", null);
+    // const isMatch = await employee.comparePassword(password);
+    // if (!isMatch) return sendResponse(res, 401, "Invalid credentials", null);
 
     if (!employee.isActive) return sendResponse(res, 403, "Account is inactive", null);
 
     if (type && type == 0) {
-      if (employee.role == "Technician") {
+      if (employee.role == 'Technician') {
         return sendResponse(res, 400, "No admin or super admin found", null)
       }
     }
 
+    if (!employee.isActive) {
+      return sendResponse(res, 400, "Your account is inactive", null)
+
+    }
 
 
     if (fcmToken) {
       employee.fcmToken.push(fcmToken);
-      return await employee.save();
+      await employee.save();
     }
 
     delete (employee as any).password;
     employee.toObject();
+
     let obj = {
+      id: employee.id.toString(),
       name: employee.name,
       number: employee.number, role: employee.role, email: employee.email
     }
     const jwt = generateToken(obj)
+
     sendResponse(res, 200, "Login successful", {
       employee, jwt
     });
@@ -193,10 +204,10 @@ export const getEmployee = async (req: Request, res: Response) => {
       const allowedRoles = Object.values(roleEnum);
 
       let isValidRole = allowedRoles.includes(filterByRole);
-      if (!isValidRole) {
-        sendResponse(res, 400, "Role is invalid", null)
+      if (isValidRole) {
+        query.role = filterByRole
+
       }
-      query.role = filterByRole
     }
 
     if (searchBy.trim() !== "") {
@@ -213,13 +224,64 @@ export const getEmployee = async (req: Request, res: Response) => {
     const total = await EmployeeModel.countDocuments(query);
 
     // Fetch paginated data
-    const users = await EmployeeModel.find(query)
+    const users = await EmployeeModel.find(query, { password: 0, fcmToken: 0 })
       .skip((index - 1) * top)
       .limit(top)
       .sort({ createdAt: -1 });
 
-    sendResponse(res, 200, "Technican fetched successfully", { users, total });
-  } catch (error) {
-
+    sendResponse(res, 200, "Employee fetched successfully", { users, total });
+  } catch (err: any) {
+    logger.error("Error at toogle status of employee", null)
+    sendResponse(res, 500, "Status toggle failed", null);
   }
+}
+
+
+export const getTechnician = async (req: Request, res: Response) => {
+  try {
+
+    // Fetch paginated data
+    const technicians = await EmployeeModel.find(
+      { role: roleEnum.TECHNICIAN, isActive: true },
+      { _id: 1, name: 1, } // fields you want to include
+    );
+
+    sendResponse(res, 200, "Technican fetched successfully", technicians);
+
+  } catch (err: any) {
+    logger.error("Error at toogle status of employee", null)
+    sendResponse(res, 500, "Status toggle failed", null);
+  }
+}
+
+
+export const logoutEmployee = async (req: Request, res: Response) => {
+  try {
+    const { fcmToken } = req.body;
+
+
+    const { id } = req.user;
+
+
+    if (!checkValidMongoseId(id)) {
+      return sendResponse(res, 400, "Id is invalid", false);
+    }
+
+    const employee = await EmployeeModel.findById(id);
+
+    if (!employee) {
+      return sendResponse(res, 200, "Employee Not Found", false)
+    }
+
+    employee.fcmToken = employee.fcmToken.filter(token => token != fcmToken);
+    await employee.save()
+
+    sendResponse(res, 200, "Employee Logged out successfully", true)
+
+  } catch (err: any) {
+    logger.error("Error at logging out employee", null)
+    sendResponse(res, 500, err.message, null);
+  }
+
+
 }

@@ -1,28 +1,10 @@
-2025-09-19T16:58:13.880Z [31merror[39m: Error at register employee
-2025-09-19T17:00:05.828Z [31merror[39m: Error at register employee
-2025-09-19T17:00:23.565Z [31merror[39m: Error at register employee
-2025-09-20T17:44:18.144Z [31merror[39m: Error at login employee
-2025-09-20T17:51:33.163Z [31merror[39m: Error at login employee
-2025-09-21T18:13:50.228Z [31merror[39m: Error at toogle isActive of employee data.trim is not a function
-2025-09-21T18:16:13.584Z [31merror[39m: Error at toogle isActive of employee data.trim is not a function
-2025-09-21T18:17:02.860Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:18:29.067Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:19:46.081Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:19:58.062Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:20:18.997Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:20:50.582Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:22:35.452Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-21T18:23:11.979Z [31merror[39m: Error at upsert service is data.trim is not a function
-2025-09-22T10:42:35.054Z [31merror[39m: Error at getting dashboard data
-2025-09-22T10:43:18.318Z [31merror[39m: Error at getting dashboard dataTypeError: Converting circular structure to JSON
-    --> starting at object with constructor 'MongoClient'
-    |     property 's' -> object with constructor 'Object'
-    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
-    --- property 'client' closes the circle
-2025-09-23T10:04:57.977Z [31merror[39m: Error at register employee
-2025-09-23T10:05:28.871Z [31merror[39m: Error at register employee
-2025-09-23T10:05:56.277Z [31merror[39m: Error at register employee Employee validation failed: address: Path `address` is required.
-2025-09-30T14:08:53.436Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
-2025-10-03T13:10:34.247Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
-2025-10-03T13:14:10.284Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
-2025-10-03T13:14:37.209Z [31merror[39m: Error at upsert service is Cannot read properties of undefined (reading 'length')
+2025-11-29T09:05:36.579Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:05:36.589Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:24:53.609Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:24:53.614Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:29:15.583Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:29:15.600Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:42:27.679Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T09:42:27.690Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T10:16:03.953Z [31merror[39m: error at authorize user is  jwt expired
+2025-11-29T10:16:03.958Z [31merror[39m: error at authorize user is  jwt expired

@@ -37,6 +37,10 @@ const ConfigSchema: Schema<Config> = new Schema({
     termAndConditon: {
         type: String,
         default: ''
+    }, 
+    qrImage:{
+         type: String,
+      default: ''
     }
 });
 

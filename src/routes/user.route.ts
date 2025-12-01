@@ -1,11 +1,16 @@
 import express from "express"
-import { changePassword, getUsers, login, toggleStatus, UpsertUserByAdmin } from "../controller/user.controller";
+import { addUser, changePassword, getUser, getUsers, login, logout, toggleStatus, UpdateUser, UpsertUserByAdmin } from "../controller/user.controller";
+import { authorize } from "../middleware/jwt";
 const userRouter = express.Router();
 
-userRouter.post("/users", getUsers);
+userRouter.post("/users",authorize(), getUsers);
+userRouter.get("/user/:id",authorize(), getUser);
 userRouter.get("/toggleCustomerStatus/:id", toggleStatus);
-userRouter.post("/changePassword", changePassword);
+userRouter.post("/changePassword",authorize(), changePassword);
 userRouter.post("/login", login);
-userRouter.post("/upsertUserByAdmin", UpsertUserByAdmin);
+userRouter.post("/upsertUserByAdmin",authorize(), UpsertUserByAdmin);    
+userRouter.post("/updateUser",authorize(), UpdateUser);    
+userRouter.post("/register", addUser);    
+userRouter.post("/logout",authorize(), logout);
 
 export default userRouter

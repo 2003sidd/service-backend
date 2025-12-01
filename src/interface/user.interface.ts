@@ -3,7 +3,9 @@ export interface IUser {
   email: string;
   number: string;
   password: string;
+  notificationCount:string;
   isActive: boolean;
+  fcmToken :string[]
 }
 
 // 2. Extend Document with the method comparePassword

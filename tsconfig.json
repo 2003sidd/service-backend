@@ -4,6 +4,7 @@
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
+    "typeRoots": [ "./src/utility/express-request.d.ts"],
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true

@@ -8,55 +8,54 @@ const upsertService = async (req: Request, res: Response) => {
 
         const { _id, name, description, services, isActive = true } = req.body;
 
+      
+
         if (!checkInValidStringField(name)) {
-            return sendResponse(res, 400, "Name is required field", null);
+            return sendResponse(res, 400, "Name is required field", false);
         }
 
         if (!checkInValidStringField(description)) {
-            return sendResponse(res, 400, "Title is required field", null);
+            return sendResponse(res, 400, "Title is required field", false);
         }
 
         if (services == undefined && Array.isArray(services) && services.length < 1) {
-            return sendResponse(res, 400, "Services must not be empty", null);
+            return sendResponse(res, 400, "Services must not be empty", false);
         }
 
-        console.log("cehcking array", services)
+      
+
         for (let i = 0; i < services.length; i++) {
             if (!checkInValidStringField(services[i].price) || !checkInValidStringField(services[i].name)) {
-                return sendResponse(res, 400, "Service data is invalid", null)
+                return sendResponse(res, 400, "Service data is invalid", false)
             }
         }
 
-        console.log("for id check", _id)
-
         if (!_id) {
-            const serviceData = await serviceModel.create({ name, description, services, isActive });
-            return sendResponse(res, 201, "Service created successfully", serviceData);
+            await serviceModel.create({ name, description, services, isActive });
+            return sendResponse(res, 201, "Service created successfully", true);
         }
 
-        console.log("id found and start updating")
         const data = await serviceModel.findByIdAndUpdate(
             _id,
             { $set: { name, description, services, isActive } },
             { new: true }
         );
-        console.log("updated and data is", data)
 
         if (!data)
-            return sendResponse(res, 500, "Service not created", null);
+            return sendResponse(res, 500, "Service not created", false);
 
-        return sendResponse(res, 200, "Service updated succesfully", data)
+        return sendResponse(res, 200, "Service updated succesfully", true)
 
 
     } catch (error: any) {
         logger.error("Error at upsert service is", error)
-        sendResponse(res, 500, "Upsert failed", error.message);
+        sendResponse(res, 500, error.message, false);
     }
 };
 
 const getAllServices = async (req: Request, res: Response) => {
     try {
-        const data = await serviceModel.find();
+        const data = await serviceModel.find({ isActive: true });
         if (data && data.length > 0) {
             return sendResponse(res, 200, "Service found", data);
         }
@@ -128,6 +127,8 @@ const getServiceById = async (req: Request<{ id: string }>, res: Response) => {
         sendResponse(res, 500, "Status toggle failed", error.message);
     }
 };
+
+
 
 export { getAllServices, getAllServicesAdmin, toggleServiceStatus, getServiceById, upsertService };
 

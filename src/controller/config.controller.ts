@@ -6,7 +6,12 @@ import logger from "../utility/wingstonLogger";
 const getConfig = async (req: Request, res: Response) => {
     try {
         const config = await configModel.findById('singleton');
-        if (!config) return res.status(404).json({ message: 'Config not found' });
+
+        if (!config) {
+            const newConfig = await configModel.create({ _id: "singleton" });
+            return res.json(newConfig);
+        }
+
         sendResponse(res, 200, "Config found", config)
     } catch (err: any) {
         res.status(500).json({ error: err.message });
@@ -210,6 +215,7 @@ export const getContactInfo = async (req: Request, res: Response) => {
         sendResponse(res, 500, err.message, null)
     }
 };
+
 
 
 export const setContactNumber = async (req: Request, res: Response) => {

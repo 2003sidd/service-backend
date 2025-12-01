@@ -25,6 +25,14 @@ const userSchema = new mongoose.Schema<IUserDocument>({
         type: String,
         required: true
     },
+    notificationCount: {
+        type: String,
+        default: "0"
+    },
+    fcmToken: {
+        type: [String],
+        required: false
+    },
     isActive: {
         type: Boolean,
         default: true
